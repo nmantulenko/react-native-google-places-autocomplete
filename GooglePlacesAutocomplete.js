@@ -141,6 +141,19 @@ export default class GooglePlacesAutocomplete extends Component {
         });
       }
     }
+    
+    // bubble up some entries
+    if (this.props.bubbleUp) {
+      for (var i = 0; i < results.length; i++) {
+        const shouldReplaced = this.props.bubbleUp.some(place_id => results[i]['place_id'] === place_id)
+        if (i !== 0 && shouldReplaced) {
+          let firstEl = results[0]
+          let movableEl = results[i]
+          results[0] = movableEl
+          results[i] = firstEl
+        }
+      }
+    }
 
     res = res.map((place) => ({
       ...place,
@@ -951,6 +964,9 @@ GooglePlacesAutocomplete.propTypes = {
     url: PropTypes.string,
     useOnPlatform: PropTypes.oneOf(['web', 'all']),
   }),
+  bubbleUp: PropTypes.arrayOf(
+    PropTypes.string.isRequired,
+  ),
 };
 GooglePlacesAutocomplete.defaultProps = {
   placeholder: 'Search',
