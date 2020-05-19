@@ -281,6 +281,16 @@ export default class GooglePlacesAutocomplete extends Component {
     );
   };
 
+  _onSubmitEditing = () => {
+    const rowData = this.state.dataSource[0]
+    
+    if (rowData == null) {
+      this.props.onNotFound()
+    } else {
+      this._onPress(rowData)
+    }
+  }
+
   _onPress = (rowData) => {
     if (
       rowData.isPredefinedPlace !== true &&
@@ -887,7 +897,7 @@ export default class GooglePlacesAutocomplete extends Component {
               ]}
               value={this.state.text}
               placeholder={this.props.placeholder}
-              onSubmitEditing={this.props.onSubmitEditing}
+              onSubmitEditing={this._onSubmitEditing}
               placeholderTextColor={this.props.placeholderTextColor}
               onFocus={
                 onFocus
